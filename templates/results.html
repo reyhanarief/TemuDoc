@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+    <link rel="icon" type="image/png" href="/static/similarity.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen bg-white px-16 md:px-[20rem] relative"
+  >
+    <div class="absolute top-3 left-5">
+      <a
+        href="/"
+        class="flex items-center text-black px-2 py-2 hover:bg-gray-300 hover:rounded-2xl font-semibold text-lg"
+      >
+        <i class="fas fa-arrow-left mr-3"></i> Start New
+      </a>
+    </div>
+
+    <div class="w-full mb-8 flex flex-col items-center justify-center">
+      <img
+        src="/static/similarity.png"
+        alt="Similarity"
+        class="mb-2 w-12 h-12"
+      />
+      <h2 class="text-3xl font-semibold">Search Query</h2>
+      <form action="/search" method="POST" class="mt-4 flex w-[40rem]">
+        <input
+          type="text"
+          name="query"
+          placeholder="Enter your query"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-l-lg"
+        />
+        <button
+          type="submit"
+          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-r-lg"
+        >
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <button
+        onclick="togglePopup()"
+        class="mt-4 self-start w-50 px-2 py-2 bg-white border-[1px] border-gray-300 hover:bg-gray-100 text-black font-semibold rounded-2xl flex items-center"
+      >
+        <img
+          src="/static/stemming.png"
+          alt="Similarity Image"
+          class="h-6 w-6 mr-3"
+        />
+        Stemming Result
+      </button>
+    </div>
+
+    {% if results %}
+    <div class="w-full flex flex-col items-center justify-center">
+      <h2 class="text-2xl font-semibold border-b-[3.5px] border-black">
+        Search Results
+      </h2>
+      <table
+        class="table-auto w-full border-collapse border border-gray-300 mt-4"
+      >
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 px-4 py-2">Document</th>
+            <th class="border border-gray-300 px-4 py-2">Similarity Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for filename, similarity in results %}
+          <tr class="text-center">
+            <td class="border border-gray-300 px-4 py-2">{{ filename }}</td>
+            <td class="border border-gray-300 px-4 py-2">
+              {{ similarity | round(4) }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <div
+      id="popup"
+      class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+    >
+      <
+      <div
+        class="bg-white w-3/4 max-h-[80vh] p-6 rounded-lg shadow-lg overflow-y-auto"
+      >
+        <h2 class="text-xl font-bold mb-4">Stemming Result</h2>
+        <table class="table-auto w-full border-collapse border border-gray-300">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border border-gray-300 px-4 py-2">Filename</th>
+              <th class="border border-gray-300 px-4 py-2">Base Words Count</th>
+              <th class="border border-gray-300 px-4 py-2">Stemmed Content</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in uploaded_files %}
+            <tr class="text-center">
+              <td class="border border-gray-300 px-4 py-2">
+                {{ file.filename }}
+              </td>
+              <td class="border border-gray-300 px-4 py-2">
+                {{ file.stemmed_word_count }}
+              </td>
+              <td class="border border-gray-300 px-4 py-2">
+                {{ file.stemmed_content }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <button
+          onclick="togglePopup()"
+          class="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-lg"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function togglePopup() {
+        const popup = document.getElementById("popup");
+        popup.classList.toggle("hidden");
+      }
+    </script>
+  </body>
+</html>

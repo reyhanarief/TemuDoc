@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TemuDoc</title>
+    <link rel="icon" type="image/png" href="/static/similarity.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen bg-white px-16 md:px-[20rem]"
+  >
+    <div class="flex flex-col md:flex-row items-start justify-center">
+      <div class="text-left md:mr-5">
+        <h1 class="mt-4 text-5xl font-bold">
+          Search for similarity score in
+          <span class="bg-gray-300 mt-2 rounded-lg inline-block"> TXT </span>
+          ,
+          <span class="bg-gray-300 rounded-lg inline-block"> DOC </span>
+          ,
+          <span class="bg-gray-300 rounded-lg inline-block"> DOCX </span>
+          or
+          <span class="bg-gray-300 rounded-lg inline-block"> PDF </span>
+          based on queries
+          <span class="underline"> in Bahasa Indonesia </span>
+        </h1>
+      </div>
+      <div class="mt-8 md:mt-0">
+        <img
+          alt="Similarity"
+          class="rounded-lg"
+          src="{{ url_for('static', filename='similarity.png') }}"
+          height="700"
+          width="700"
+        />
+      </div>
+    </div>
+    <div
+      class="mt-12 border-4 border-dashed border-black rounded-2xl w-[20rem] h-[4rem] flex items-center justify-center relative"
+    >
+      <form
+        action="/"
+        method="POST"
+        enctype="multipart/form-data"
+        class="w-full flex flex-col items-center"
+      >
+        <input
+          type="file"
+          name="documents"
+          multiple
+          required
+          class="mt-[6rem] mb-12"
+          accept=".txt, .docx, .pdf"
+        />
+        <button
+          type="submit"
+          class="px-64 py-3 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl"
+        >
+          Upload
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
